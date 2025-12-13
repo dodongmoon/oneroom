@@ -2,35 +2,35 @@ import React from 'react';
 import { Key, User, Wrench, CheckCircle } from 'lucide-react';
 
 const statusConfig = {
-  contracted: { // Green: Medium-Vivid
+  renewed: { // Green: Renewed
     bg: 'bg-emerald-300',
     border: 'border-emerald-500',
     glow: 'shadow-md',
     text: 'text-emerald-950',
     icon: <Key className="w-4 h-4 text-emerald-800" />
   },
-  occupied: { // Yellow: Medium-Vivid
+  new_occupant: { // Yellow: New Occupant
     bg: 'bg-amber-300',
     border: 'border-amber-500',
     glow: 'shadow-md',
     text: 'text-amber-950',
     icon: <User className="w-4 h-4 text-amber-800" />
   },
-  cleaning: { // Red: Medium-Vivid
+  ready: { // Blue: Ready
+    bg: 'bg-blue-300',
+    border: 'border-blue-500',
+    glow: 'shadow-md',
+    text: 'text-blue-950',
+    icon: <CheckCircle className="w-4 h-4 text-blue-800" />
+  },
+  vacated: { // Red: Vacated/Cleaning Needed
     bg: 'bg-rose-300',
     border: 'border-rose-500',
     glow: 'shadow-md',
     text: 'text-rose-950',
     icon: <Wrench className="w-4 h-4 text-rose-800" />
   },
-  reserved: { // Blue: Move-in Scheduled
-    bg: 'bg-blue-300',
-    border: 'border-blue-500',
-    glow: 'shadow-md',
-    text: 'text-blue-950',
-    icon: <User className="w-4 h-4 text-blue-800" />
-  },
-  vacant: { // Gray: Lighter to contrast with building
+  deposit_paid: { // Gray: Deposit Paid
     bg: 'bg-slate-200',
     border: 'border-slate-300',
     glow: 'shadow-md',
@@ -40,7 +40,7 @@ const statusConfig = {
 };
 
 export function RoomCard({ room, onClick }) {
-  const config = statusConfig[room.status] || statusConfig.vacant;
+  const config = statusConfig[room.status] || statusConfig.ready;
 
   return (
     <button
