@@ -8,36 +8,20 @@ function App() {
   const { rooms, loading, updateRoomStatus } = useRooms();
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentBuildingIndex, setCurrentBuildingIndex] = useState(0); // 0: C, 1: B (Default C)
+  const [currentBuildingIndex, setCurrentBuildingIndex] = useState(1); // 0: C, 1: B, 2: A
 
   const nextBuilding = () => {
-    if (currentBuildingIndex < 1) setCurrentBuildingIndex(prev => prev + 1);
+    if (currentBuildingIndex < 2) setCurrentBuildingIndex(prev => prev + 1);
   };
 
   const prevBuilding = () => {
     if (currentBuildingIndex > 0) setCurrentBuildingIndex(prev => prev - 1);
   };
-
-  const handleRoomClick = (room) => {
-    setSelectedRoom(room);
-    setIsModalOpen(true);
-  };
-
-  const handleUpdateStatus = (roomId, newStatus) => {
-    updateRoomStatus(roomId, newStatus);
-    setIsModalOpen(false);
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <Loader className="w-10 h-10 text-slate-400 animate-spin" />
-      </div>
-    );
-  }
-
+  // ...
+  // ...
   const roomsB = rooms.filter(r => r.building_name === 'B');
   const roomsC = rooms.filter(r => r.building_name === 'C');
+  const roomsA = rooms.filter(r => r.building_name === 'A');
 
   return (
     <div className="min-h-screen p-4 md:p-8 pb-20">
@@ -58,7 +42,7 @@ function App() {
           className="flex transition-transform duration-500 ease-out"
           style={{ transform: `translateX(-${currentBuildingIndex * 100}%)` }}
         >
-          {/* Building C (Index 0) - Swapped to Left */}
+          {/* Building C (Index 0) - Left */}
           <div className="w-full flex-shrink-0 px-2">
             <BuildingView
               title="C동 (15세대)"
@@ -68,11 +52,20 @@ function App() {
             />
           </div>
 
-          {/* Building B (Index 1) - Swapped to Right */}
+          {/* Building B (Index 1) - Center */}
           <div className="w-full flex-shrink-0 px-2">
             <BuildingView
               title="B동 (18세대)"
               rooms={roomsB}
+              onRoomClick={handleRoomClick}
+            />
+          </div>
+
+          {/* Building A (Index 2) - Right */}
+          <div className="w-full flex-shrink-0 px-2">
+            <BuildingView
+              title="A동 (14세대)"
+              rooms={roomsA}
               onRoomClick={handleRoomClick}
             />
           </div>
@@ -88,7 +81,7 @@ function App() {
 
         <button
           onClick={nextBuilding}
-          className={`absolute top-1/2 -translate-y-1/2 right-0 z-20 p-2 rounded-full bg-white/80 backdrop-blur-md shadow-lg border border-slate-200 text-slate-800 hover:bg-white transition-all ${currentBuildingIndex === 1 ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+          className={`absolute top-1/2 -translate-y-1/2 right-0 z-20 p-2 rounded-full bg-white/80 backdrop-blur-md shadow-lg border border-slate-200 text-slate-800 hover:bg-white transition-all ${currentBuildingIndex === 2 ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
         >
           <ChevronRight size={40} />
         </button>

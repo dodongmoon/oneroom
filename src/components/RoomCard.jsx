@@ -23,6 +23,13 @@ const statusConfig = {
     text: 'text-rose-950',
     icon: <Wrench className="w-4 h-4 text-rose-800" />
   },
+  reserved: { // Blue: Move-in Scheduled
+    bg: 'bg-blue-300',
+    border: 'border-blue-500',
+    glow: 'shadow-md',
+    text: 'text-blue-950',
+    icon: <User className="w-4 h-4 text-blue-800" />
+  },
   vacant: { // Gray: Lighter to contrast with building
     bg: 'bg-slate-200',
     border: 'border-slate-300',
