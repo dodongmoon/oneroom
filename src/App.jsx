@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight, Loader } from 'lucide-react';
 import { useRooms } from './hooks/useRooms';
 
 function App() {
-  const { rooms, loading, updateRoomStatus } = useRooms();
+  const { rooms, loading, updateRoom } = useRooms();
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentBuildingIndex, setCurrentBuildingIndex] = useState(1); // 0: C, 1: B, 2: A
@@ -22,9 +22,11 @@ function App() {
     setIsModalOpen(true);
   };
 
-  const handleUpdateStatus = (roomId, newStatus) => {
-    updateRoomStatus(roomId, newStatus);
-    setIsModalOpen(false);
+  const handleUpdate = (roomId, updates) => {
+    updateRoom(roomId, updates);
+    if (updates.status) {
+      setIsModalOpen(false);
+    }
   };
 
   if (loading) {
@@ -106,7 +108,7 @@ function App() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         room={selectedRoom}
-        onUpdateStatus={handleUpdateStatus}
+        onUpdate={handleUpdate}
       />
     </div>
   );

@@ -10,7 +10,25 @@ const statusOptions = [
     { id: 'reserved', label: '입주 예정', icon: User, color: 'bg-blue-300 text-blue-950 border border-blue-500 hover:bg-blue-400' }
 ];
 
-export function StatusModal({ isOpen, onClose, room, onUpdateStatus }) {
+export function StatusModal({ isOpen, onClose, room, onUpdate }) {
+    const [memo, setMemo] = React.useState('');
+
+    React.useEffect(() => {
+        if (room) {
+            setMemo(room.memo || '');
+        }
+    }, [room]);
+
+    const handleMemoChange = (e) => {
+        setMemo(e.target.value);
+    };
+
+    const handleMemoBlur = () => {
+        if (room && memo !== room.memo) {
+            onUpdate(room.id, { memo });
+        }
+    };
+
     if (!isOpen || !room) return null;
 
     return (
@@ -26,13 +44,28 @@ export function StatusModal({ isOpen, onClose, room, onUpdateStatus }) {
                 <h3 className="text-xl font-bold mb-1 text-slate-800">
                     {room.building_name}동 {room.room_number}호
                 </h3>
-                <p className="text-slate-500 mb-6">상태를 변경해주세요</p>
+                <p className="text-slate-500 mb-4">상태를 변경해주세요</p>
+
+                {/* Memo Section */}
+                <div className="mb-6">
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                        메모
+                    </label>
+                    <textarea
+                        value={memo}
+                        onChange={handleMemoChange}
+                        onBlur={handleMemoBlur}
+                        placeholder="특이사항을 입력하세요..."
+                        className="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none text-slate-700 bg-slate-50"
+                        rows={3}
+                    />
+                </div>
 
                 <div className="grid gap-3">
                     {statusOptions.map((option) => (
                         <button
                             key={option.id}
-                            onClick={() => onUpdateStatus(room.id, option.id)}
+                            onClick={() => onUpdate(room.id, { status: option.id })}
                             className={`
                 w-full flex items-center gap-3 p-4 rounded-xl transition-all
                 ${option.color}

@@ -32,17 +32,22 @@ export function useRooms() {
     }, []);
 
     // 4. Update Function
-    const updateRoomStatus = (roomId, newStatus) => {
+    // 4. Update Function
+    const updateRoom = (roomId, updates) => {
         if (!socket) return;
 
         // Optimistic Update
         setRooms(prev => prev.map(r =>
-            r.id === roomId ? { ...r, status: newStatus } : r
+            r.id === roomId ? { ...r, ...updates } : r
         ));
 
         // Emit Event
-        socket.emit('update_room', { id: roomId, status: newStatus });
+        socket.emit('update_room', { id: roomId, ...updates });
     };
 
-    return { rooms, loading, updateRoomStatus };
+    const updateRoomStatus = (roomId, newStatus) => {
+        updateRoom(roomId, { status: newStatus });
+    };
+
+    return { rooms, loading, updateRoomStatus, updateRoom };
 }
