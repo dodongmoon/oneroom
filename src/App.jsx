@@ -17,8 +17,23 @@ function App() {
   const prevBuilding = () => {
     if (currentBuildingIndex > 0) setCurrentBuildingIndex(prev => prev - 1);
   };
-  // ...
-  // ...
+  const handleRoomClick = (room) => {
+    setSelectedRoom(room);
+    setIsModalOpen(true);
+  };
+
+  const handleUpdateStatus = (roomId, newStatus) => {
+    updateRoomStatus(roomId, newStatus);
+    setIsModalOpen(false);
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <Loader className="w-10 h-10 text-slate-400 animate-spin" />
+      </div>
+    );
+  }
   const roomsB = rooms.filter(r => r.building_name === 'B');
   const roomsC = rooms.filter(r => r.building_name === 'C');
   const roomsA = rooms.filter(r => r.building_name === 'A');
