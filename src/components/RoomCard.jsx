@@ -30,12 +30,12 @@ const statusConfig = {
     text: 'text-rose-950',
     icon: <Wrench className="w-4 h-4 text-rose-800" />
   },
-  deposit_paid: { // Purple: Deposit Paid
-    bg: 'bg-purple-300',
-    border: 'border-purple-500',
+  deposit_paid: { // Gray: Before Exit (formerly Deposit Paid)
+    bg: 'bg-gray-200',
+    border: 'border-gray-500',
     glow: 'shadow-md',
-    text: 'text-purple-950',
-    icon: <CheckCircle className="w-4 h-4 text-purple-800" />
+    text: 'text-gray-900',
+    icon: <CheckCircle className="w-4 h-4 text-gray-700" />
   }
 };
 
