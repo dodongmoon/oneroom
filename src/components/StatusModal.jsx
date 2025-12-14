@@ -76,6 +76,39 @@ export function StatusModal({ isOpen, onClose, room, onUpdate }) {
                         </button>
                     ))}
                 </div>
+
+                {/* Deposit Status Section */}
+                <div className="mt-6 border-t pt-4">
+                    <label className="block text-sm font-medium text-slate-700 mb-3">
+                        입금 상태
+                    </label>
+                    <div className="grid grid-cols-2 gap-3">
+                        <button
+                            onClick={() => onUpdate(room.id, { is_deposit_paid: true })}
+                            className={`
+                                flex items-center justify-center gap-2 p-3 rounded-xl transition-all font-bold border active:scale-95
+                                ${room.is_deposit_paid
+                                    ? 'bg-green-100 text-green-800 border-green-500 ring-2 ring-green-500 ring-offset-2'
+                                    : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}
+                            `}
+                        >
+                            <span className="text-lg">O</span>
+                            <span>입금완료</span>
+                        </button>
+                        <button
+                            onClick={() => onUpdate(room.id, { is_deposit_paid: false })}
+                            className={`
+                                flex items-center justify-center gap-2 p-3 rounded-xl transition-all font-bold border active:scale-95
+                                ${!room.is_deposit_paid
+                                    ? 'bg-red-100 text-red-800 border-red-500 ring-2 ring-red-500 ring-offset-2'
+                                    : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}
+                            `}
+                        >
+                            <span className="text-lg">X</span>
+                            <span>미입금</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     );

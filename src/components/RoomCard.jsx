@@ -59,6 +59,11 @@ export function RoomCard({ room, onClick }) {
         {room.room_number}
       </span>
 
+      {/* Deposit Status Indicator - Top Left */}
+      <div className={`absolute top-1 right-1 font-black text-lg ${room.is_deposit_paid ? 'text-green-600' : 'text-red-500'}`}>
+        {room.is_deposit_paid ? 'O' : 'X'}
+      </div>
+
       {/* Icon floating */}
       {config.icon && (
         <div className="mt-1 opacity-80 group-hover:opacity-100 transition-opacity">

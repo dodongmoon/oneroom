@@ -107,7 +107,7 @@ function App() {
       <StatusModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        room={selectedRoom}
+        room={rooms.find(r => r.id === selectedRoom?.id) || selectedRoom}
         onUpdate={handleUpdate}
       />
     </div>
