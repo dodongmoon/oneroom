@@ -2,12 +2,11 @@ import React from 'react';
 import { X, Key, User, Wrench, CheckCircle } from 'lucide-react';
 
 const statusOptions = [
-
     { id: 'renewed', label: '재계약', icon: Key, color: 'bg-emerald-300 text-emerald-950 border border-emerald-500 hover:bg-emerald-400' },
-    { id: 'new_occupant', label: '새입주완료', icon: User, color: 'bg-amber-300 text-amber-950 border border-amber-500 hover:bg-amber-400' },
+    { id: 'new_occupant', label: '새계약 입주완료', icon: User, color: 'bg-amber-300 text-amber-950 border border-amber-500 hover:bg-amber-400' },
+    { id: 'vacated', label: '청소,수리', icon: Wrench, color: 'bg-rose-300 text-rose-950 border border-rose-500 hover:bg-rose-400' },
     { id: 'ready', label: '준비완료', icon: CheckCircle, color: 'bg-blue-300 text-blue-950 border border-blue-500 hover:bg-blue-400' },
-    { id: 'vacated', label: '퇴실완료/청소필요', icon: Wrench, color: 'bg-rose-300 text-rose-950 border border-rose-500 hover:bg-rose-400' },
-    { id: 'deposit_paid', label: '입금완료', icon: CheckCircle, color: 'bg-slate-200 text-slate-600 border border-slate-300 hover:bg-slate-300' }
+    { id: 'deposit_paid', label: '입금완료', icon: CheckCircle, color: 'bg-purple-300 text-purple-950 border border-purple-500 hover:bg-purple-400' }
 ];
 
 export function StatusModal({ isOpen, onClose, room, onUpdate }) {
