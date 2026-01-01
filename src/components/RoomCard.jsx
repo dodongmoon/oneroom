@@ -49,7 +49,7 @@ export function RoomCard({ room, onClick }) {
         relative w-full aspect-square
         border ${config.border} ${config.bg} ${config.glow}
         rounded-xl
-        flex flex-col items-center justify-center
+        flex flex-col items-center justify-start pt-4
         transition-all duration-300 ease-out
         hover:scale-105 hover:shadow-md hover:border-indigo-300 hover:z-10
         group
@@ -59,17 +59,15 @@ export function RoomCard({ room, onClick }) {
         {room.room_number}
       </span>
 
-      {/* Deposit Status Indicator - Top Left */}
-      <div className={`absolute top-1 right-1 font-black text-lg ${room.is_deposit_paid ? 'text-green-600' : 'text-red-500'}`}>
+      {/* Deposit Status Indicator - Top Right (Smaller) */}
+      <div className={`absolute top-2 right-2 font-black text-base ${room.is_deposit_paid ? 'text-green-600' : 'text-red-500/80'} z-10`}>
         {room.is_deposit_paid ? 'O' : 'X'}
       </div>
 
-      {/* Icon floating */}
-      {config.icon && (
-        <div className="mt-1 opacity-80 group-hover:opacity-100 transition-opacity">
-          {config.icon}
-        </div>
-      )}
+      {/* Move-in Date Display - Bottom Center (Smaller than Room Number) */}
+      <div className="absolute bottom-4 font-bold text-xs md:text-sm text-slate-800 tracking-tight opacity-90">
+        {room.move_in_date}
+      </div>
     </button>
   );
 }

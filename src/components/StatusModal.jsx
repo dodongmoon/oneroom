@@ -11,15 +11,21 @@ const statusOptions = [
 
 export function StatusModal({ isOpen, onClose, room, onUpdate }) {
     const [memo, setMemo] = React.useState('');
+    const [moveInDate, setMoveInDate] = React.useState('');
 
     React.useEffect(() => {
         if (room) {
             setMemo(room.memo || '');
+            setMoveInDate(room.move_in_date || '');
         }
     }, [room]);
 
     const handleMemoChange = (e) => {
         setMemo(e.target.value);
+    };
+
+    const handleDateChange = (e) => {
+        setMoveInDate(e.target.value);
     };
 
     const handleMemoBlur = () => {
@@ -28,85 +34,112 @@ export function StatusModal({ isOpen, onClose, room, onUpdate }) {
         }
     };
 
+    const handleDateBlur = () => {
+        if (room && moveInDate !== room.move_in_date) {
+            onUpdate(room.id, { move_in_date: moveInDate });
+        }
+    };
+
     if (!isOpen || !room) return null;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 backdrop-blur-sm">
-            <div className="bg-white border border-slate-200 rounded-2xl shadow-2xl w-full max-w-sm p-6 relative animate-in fade-in zoom-in duration-200">
-                <button
-                    onClick={onClose}
-                    className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors"
-                >
-                    <X className="w-6 h-6" />
-                </button>
+            <div className="bg-white border border-slate-200 rounded-2xl shadow-2xl w-full max-w-sm flex flex-col max-h-[85vh] relative animate-in fade-in zoom-in duration-200">
+                {/* Fixed Header */}
+                <div className="p-6 pb-2 flex-none">
+                    <button
+                        onClick={onClose}
+                        className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors z-10"
+                    >
+                        <X className="w-6 h-6" />
+                    </button>
 
-                <h3 className="text-xl font-bold mb-1 text-slate-800">
-                    {room.building_name}동 {room.room_number}호
-                </h3>
-                <p className="text-slate-500 mb-4">상태를 변경해주세요</p>
-
-                {/* Memo Section */}
-                <div className="mb-6">
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
-                        메모
-                    </label>
-                    <textarea
-                        value={memo}
-                        onChange={handleMemoChange}
-                        onBlur={handleMemoBlur}
-                        placeholder="특이사항을 입력하세요..."
-                        className="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none text-slate-700 bg-slate-50"
-                        rows={3}
-                    />
+                    <h3 className="text-xl font-bold mb-1 text-slate-800">
+                        {room.building_name}동 {room.room_number}호
+                    </h3>
+                    <p className="text-slate-500">상태를 변경해주세요</p>
                 </div>
 
-                <div className="grid gap-3">
-                    {statusOptions.map((option) => (
-                        <button
-                            key={option.id}
-                            onClick={() => onUpdate(room.id, { status: option.id })}
-                            className={`
-                w-full flex items-center gap-3 p-4 rounded-xl transition-all
-                ${option.color}
-                ${room.status === option.id ? 'ring-2 ring-offset-2 ring-indigo-500 ring-offset-white' : ''}
-              `}
-                        >
-                            <option.icon className="w-5 h-5" />
-                            <span className="font-bold tracking-wide">{option.label}</span>
-                        </button>
-                    ))}
-                </div>
+                {/* Scrollable Content */}
+                <div className="p-6 pt-2 overflow-y-auto flex-1">
+                    {/* Memo Section */}
+                    <div className="mb-6">
+                        <label className="block text-sm font-medium text-slate-700 mb-2">
+                            메모
+                        </label>
+                        <textarea
+                            value={memo}
+                            onChange={handleMemoChange}
+                            onBlur={handleMemoBlur}
+                            placeholder="특이사항을 입력하세요..."
+                            className="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none text-slate-700 bg-slate-50"
+                            rows={3}
+                        />
+                    </div>
 
-                {/* Deposit Status Section */}
-                <div className="mt-6 border-t pt-4">
-                    <label className="block text-sm font-medium text-slate-700 mb-3">
-                        입금 상태
-                    </label>
-                    <div className="grid grid-cols-2 gap-3">
-                        <button
-                            onClick={() => onUpdate(room.id, { is_deposit_paid: true })}
-                            className={`
-                                flex items-center justify-center gap-2 p-3 rounded-xl transition-all font-bold border active:scale-95
-                                ${room.is_deposit_paid
-                                    ? 'bg-green-100 text-green-800 border-green-500 ring-2 ring-green-500 ring-offset-2'
-                                    : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}
-                            `}
-                        >
-                            <span className="text-lg">O</span>
-                            <span>입금완료</span>
-                        </button>
-                        <button
-                            onClick={() => onUpdate(room.id, { is_deposit_paid: false })}
-                            className={`
-                                flex items-center justify-center gap-2 p-3 rounded-xl transition-all font-bold border active:scale-95
-                                ${!room.is_deposit_paid
-                                    ? 'bg-red-100 text-red-800 border-red-500 ring-2 ring-red-500 ring-offset-2'
-                                    : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}
-                            `}
-                        >
-                            <span className="text-lg">X</span>
-                            <span>미입금</span>
-                        </button>
+                    <div className="grid gap-3">
+                        {statusOptions.map((option) => (
+                            <button
+                                key={option.id}
+                                onClick={() => onUpdate(room.id, { status: option.id })}
+                                className={`
+                    w-full flex items-center gap-3 p-4 rounded-xl transition-all
+                    ${option.color}
+                    ${room.status === option.id ? 'ring-2 ring-offset-2 ring-indigo-500 ring-offset-white' : ''}
+                  `}
+                            >
+                                <option.icon className="w-5 h-5" />
+                                <span className="font-bold tracking-wide">{option.label}</span>
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Deposit Status Section */}
+                    <div className="mt-6 border-t pt-4">
+                        <label className="block text-sm font-medium text-slate-700 mb-3">
+                            입금 상태
+                        </label>
+                        <div className="grid grid-cols-2 gap-3">
+                            <button
+                                onClick={() => onUpdate(room.id, { is_deposit_paid: true })}
+                                className={`
+                                    flex items-center justify-center gap-2 p-3 rounded-xl transition-all font-bold border active:scale-95
+                                    ${room.is_deposit_paid
+                                        ? 'bg-green-100 text-green-800 border-green-500 ring-2 ring-green-500 ring-offset-2'
+                                        : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}
+                                `}
+                            >
+                                <span className="text-lg">O</span>
+                                <span>입금완료</span>
+                            </button>
+                            <button
+                                onClick={() => onUpdate(room.id, { is_deposit_paid: false })}
+                                className={`
+                                    flex items-center justify-center gap-2 p-3 rounded-xl transition-all font-bold border active:scale-95
+                                    ${!room.is_deposit_paid
+                                        ? 'bg-red-100 text-red-800 border-red-500 ring-2 ring-red-500 ring-offset-2'
+                                        : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}
+                                `}
+                            >
+                                <span className="text-lg">X</span>
+                                <span>미입금</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Move-in Date Section */}
+                    <div className="mt-6 border-t pt-4">
+                        <label className="block text-sm font-medium text-slate-700 mb-2">
+                            입주 날짜
+                        </label>
+                        <input
+                            type="text"
+                            value={moveInDate}
+                            onChange={handleDateChange}
+                            onBlur={handleDateBlur}
+                            placeholder="예) 12/31"
+                            className="w-full p-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-center text-lg font-bold text-slate-800 tracking-wider bg-slate-50"
+                        />
                     </div>
                 </div>
             </div>
